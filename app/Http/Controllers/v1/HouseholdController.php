@@ -15,7 +15,7 @@ use App\Http\Resources\HouseholdResource;
 class HouseholdController extends Controller
 {
 
-    public function store(HouseholdStoreRequest $request) 
+    public function store(HouseholdStoreRequest $request)
     {
         try {
             $household = new Household();
