@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\v1\HouseholdController;
+use App\Http\Controllers\v1\ResidentController;
 use App\Http\Controllers\v1\StreetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,4 +35,8 @@ Route::controller(HouseholdController::class)->prefix('v1/households/')->group(f
     Route::get('edit/{id}', 'edit')->name('households.edit');
     Route::post('update/{id}', 'update')->name('households.update');
     Route::delete('destroy/{id}', 'destroy')->name('households.destroy');
+});
+
+Route::controller(ResidentController::class)->prefix('v1/residents/')->group(function () {
+    Route::post('store', 'store')->name('residents.create');
 });
