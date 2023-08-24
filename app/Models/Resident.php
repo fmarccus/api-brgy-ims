@@ -13,6 +13,7 @@ class Resident extends Model
     {
         return $this->belongsTo(Household::class);
     }
+    protected $dates = ['birth_date'];
     // protected $fillable = [
     //     'household_id',
     //     'first_name',

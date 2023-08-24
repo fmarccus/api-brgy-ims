@@ -21,10 +21,10 @@ return new class extends Migration
             $table->integer('age');
             $table->string('sex');
             $table->string('pregnant');
-            $table->string('civil_status')->default('Single');
-            $table->string('religion')->default('Catholic');
+            $table->string('civil_status');
+            $table->string('religion');
             $table->string('contact');
-            $table->string('nationality')->default('Filipino');
+            $table->string('nationality');
             $table->string('household_head');
             $table->string('bona_fide');
             $table->string('resident_six_months');
@@ -36,8 +36,8 @@ return new class extends Migration
             $table->string('highest_education');
             $table->string('employed');
             $table->string('job_title')->nullable();
-            $table->integer('income')->default(0);
-            $table->string('income_classification')->default('Poor');
+            $table->integer('income')->nullable();
+            $table->string('income_classification')->nullable();
             $table->timestamps();
         });
     }

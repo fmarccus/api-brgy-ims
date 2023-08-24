@@ -7,10 +7,11 @@ use App\Models\Resident;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ResidentStoreRequest;
 
 class ResidentController extends Controller
 {
-    public function store(Request $request)
+    public function store(ResidentStoreRequest $request)
     {
         try {
             $resident = new Resident();
@@ -36,9 +37,9 @@ class ResidentController extends Controller
             $resident->studying = $request->studying;
             $resident->highest_education = $request->highest_education;
             $resident->employed = $request->employed;
-            $resident->job_title = ($resident->employed == 'No') ? NULL : $request->job_title;
-            $resident->income = ($resident->employed == 'No') ? 0 : $request->income;
-            $resident->income_classification = ($resident->employed == 'No') ? 'Poor' : $request->income_classification;
+            $resident->job_title = $request->job_title;
+            $resident->income = $request->income;
+            $resident->income_classification = $this->getIncomeClassification($resident->income);
             $resident->save();
             return response()->json([
                 'msg' => 'Resident saved successfully',
@@ -48,5 +49,28 @@ class ResidentController extends Controller
                 'msg' => $e->getMessage()
             ]);
         }
+    }
+    private function getIncomeClassification($income)
+    {
+        if ($income > 0 && $income <= 10957) {
+            $income_classification = "Poor";
+        } elseif ($income > 10957 && $income <= 21194) {
+            $income_classification = "Low income";
+        } elseif ($income > 21194 && $income <= 43828) {
+            $income_classification = "Lower middle class";
+        } elseif ($income > 43828 && $income <= 76669) {
+            $income_classification = "Middle class";
+        } elseif ($income > 76670 && $income <= 131484) {
+            $income_classification = "Upper middle class";
+        } elseif ($income > 131484 && $income <= 219140) {
+            $income_classification = "High income";
+        } elseif ($income > 219140) {
+            $income_classification = "Rich";
+        } elseif ($income === NULL) {
+            $income_classification = NULL;
+        } else {
+            $income_classification = "No data";
+        }
+        return $income_classification;
     }
 }
