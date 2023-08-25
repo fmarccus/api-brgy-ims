@@ -30,6 +30,7 @@ class HouseholdController extends Controller
                 'msg' => 'Household saved successfully',
             ], JsonResponse::HTTP_CREATED);
         } catch (\Exception $e) {
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
     public function edit($id)
@@ -38,9 +39,7 @@ class HouseholdController extends Controller
             $household = Household::with('street')->findOrFail($id);
             return new HouseholdResource($household);
         } catch (\Exception $e) {
-            return response()->json([
-                'msg' => 'The household does not exist',
-            ], JsonResponse::HTTP_NOT_FOUND);
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
     public function update(HouseholdUpdateRequest $request, $id)
@@ -58,9 +57,7 @@ class HouseholdController extends Controller
                 'msg' => 'Household updated successfully',
             ], JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json([
-                'msg' => 'Cannot update this household',
-            ], JsonResponse::HTTP_NOT_FOUND);
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
     public function destroy($id)
@@ -72,12 +69,7 @@ class HouseholdController extends Controller
                 'msg' => 'Household deleted successfully'
             ], JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(
-                [
-                    'msg' => 'Unable to delete this street'
-                ],
-                JsonResponse::HTTP_CONFLICT
-            );
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

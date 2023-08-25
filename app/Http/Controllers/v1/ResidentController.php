@@ -3,14 +3,29 @@
 namespace App\Http\Controllers\v1;
 
 use Carbon\Carbon;
+use App\Models\Street;
 use App\Models\Resident;
-use Illuminate\Http\Request;
+use App\Models\Household;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ResidentResource;
 use App\Http\Requests\ResidentStoreRequest;
 
 class ResidentController extends Controller
 {
+    public function residents($id)
+    {
+        try {
+            $streetId = Household::where('id', $id)->get()->pluck('street_id')->first();
+            $streetName = Street::where('id', $streetId)->get()->pluck('name')->first();
+            return response()->json([
+                'address' => Household::where('id', $id)->get()->pluck('house_number')->first() . " " . $streetName,
+                'residents' => ResidentResource::collection(Resident::with('household')->where('household_id', $id)->get())
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
     public function store(ResidentStoreRequest $request)
     {
         try {
@@ -45,9 +60,7 @@ class ResidentController extends Controller
                 'msg' => 'Resident saved successfully',
             ], JsonResponse::HTTP_CREATED);
         } catch (\Exception $e) {
-            return response()->json([
-                'msg' => $e->getMessage()
-            ]);
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
     private function getIncomeClassification($income)

@@ -27,6 +27,7 @@ class StreetController extends Controller
                 'page_count' => ceil($pageCount)
             ], JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
     public function store(StreetStoreRequest $request)
@@ -45,11 +46,16 @@ class StreetController extends Controller
                 'msg' => 'Street saved successfully',
             ], JsonResponse::HTTP_CREATED);
         } catch (\Exception $e) {
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
     public function edit($id)
     {
-        return new StreetResource(Street::findOrFail($id));
+        try {
+            return new StreetResource(Street::findOrFail($id));
+        } catch (\Exception $e) {
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
     public function update(StreetUpdateRequest $request, $id)
     {
@@ -71,6 +77,7 @@ class StreetController extends Controller
                 'msg' => 'Street updated successfully',
             ], JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -88,12 +95,7 @@ class StreetController extends Controller
                 'msg' => 'Street deleted successfully'
             ], JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(
-                [
-                    'msg' => 'Unable to delete this street'
-                ],
-                JsonResponse::HTTP_CONFLICT
-            );
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
     public function households($id)
@@ -111,6 +113,7 @@ class StreetController extends Controller
                 'page_count' => ceil($pageCount)
             ], JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
