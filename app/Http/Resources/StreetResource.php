@@ -19,6 +19,9 @@ class StreetResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'image' => $this->image,
+            'last_updated' => $this->updated_at->format('m/d/y'),
+            'household_count' => $this->households->count(),
+            'resident_count' => $this->households->flatMap->residents->count()
         ];
     }
 }

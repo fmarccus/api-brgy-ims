@@ -18,7 +18,9 @@ class StreetController extends Controller
     {
         try {
             $streetsPerPage = 6;
-            $streets = Street::simplePaginate($streetsPerPage);
+            // $streets = Street::simplePaginate($streetsPerPage);
+            $streets = StreetResource::collection(Street::simplePaginate($streetsPerPage));
+
             $streetsCount = Street::count();
             $pageCount = count(Street::all()) / $streetsPerPage;
             return response()->json([
@@ -103,7 +105,7 @@ class StreetController extends Controller
         try {
             $streetName = Street::where('id', $id)->get()->pluck('name')->first();
             $householdsPerPage = 20;
-            $households = Household::with('street')->where('street_id', $id)->simplePaginate($householdsPerPage);
+            $households = HouseholdResource::collection(Household::with('street')->where('street_id', $id)->simplePaginate($householdsPerPage));
             $householdsCount = Household::where('street_id', $id)->count();
             $pageCount = count(Household::where('street_id', $id)->get()) / $householdsPerPage;
             return response()->json([

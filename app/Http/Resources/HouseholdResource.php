@@ -22,7 +22,8 @@ class HouseholdResource extends JsonResource
             'toilet' => $this->toilet,
             'dwelling_type' => $this->dwelling_type,
             'ownership' => $this->ownership,
-
+            'last_updated' => $this->updated_at->format('m/d/y'),
+            'resident_count' => $this->residents->count()
         ];
     }
 }
