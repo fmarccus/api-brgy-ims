@@ -40,4 +40,5 @@ Route::controller(HouseholdController::class)->prefix('v1/households/')->group(f
 Route::controller(ResidentController::class)->prefix('v1/residents/')->group(function () {
     Route::get('{id}/residents', 'residents')->name('households.residents');
     Route::post('store', 'store')->name('residents.create');
+    Route::delete('destroy/{id}', 'destroy')->name('residents.destroy');
 });

@@ -63,6 +63,18 @@ class ResidentController extends Controller
             return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+    public function destroy($id)
+    {
+        try {
+            $resident = Resident::findOrFail($id);
+            $resident->delete();
+            return response()->json([
+                'msg' => 'Resident deleted successfully'
+            ], JsonResponse::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
     private function getIncomeClassification($income)
     {
         if ($income > 0 && $income <= 10957) {

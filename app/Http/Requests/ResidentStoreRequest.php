@@ -42,11 +42,11 @@ class ResidentStoreRequest extends FormRequest
             'solo_parent' => ['required', 'in:Yes,No'],
             'voter' => ['required', 'in:Yes,No'],
             'pwd' => ['required', 'in:Yes,No'],
-            'disability' => ['nullable'],
+            'disability' => ['nullable', 'in:Hearing,Intellectual,Learning,Mental,Orthopedic,Psychosocial,Speech,Visual,Cancer,Rare'],
             'studying' => ['required', 'in:Yes,No'],
             'highest_education' => ['required', 'in:None,Elementary,JHS,SHS,College,Postgrad'],
             'employed' => ['required', 'in:Yes,No'],
-            'job_title' => ['nullable'],
+            'job_title' => ['nullable', 'in:Manual,Professionals,Government,Private,Driver,Househelper,Lending,Sales,Agricultural,Others'],
             'income' => ['nullable', 'numeric', 'min:0', 'max:10000000000'],
             'income_classification' => ['nullable'],
         ];

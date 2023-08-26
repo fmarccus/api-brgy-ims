@@ -18,7 +18,6 @@ class StreetController extends Controller
     {
         try {
             $streetsPerPage = 6;
-            // $streets = Street::simplePaginate($streetsPerPage);
             $streets = StreetResource::collection(Street::simplePaginate($streetsPerPage));
 
             $streetsCount = Street::count();
