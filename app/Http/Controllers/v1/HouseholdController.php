@@ -39,7 +39,7 @@ class HouseholdController extends Controller
             $household = Household::with('street')->findOrFail($id);
             return new HouseholdResource($household);
         } catch (\Exception $e) {
-            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['msg' => 'An error has occurred' . $e->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
     public function update(HouseholdUpdateRequest $request, $id)

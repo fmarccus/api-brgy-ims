@@ -52,13 +52,60 @@ class ResidentController extends Controller
             $resident->studying = $request->studying;
             $resident->highest_education = $request->highest_education;
             $resident->employed = $request->employed;
-            $resident->job_title = $request->job_title;
-            $resident->income = $request->income;
+            $resident->job_title = ($request->employed == 'No') ? NULL : $request->job_title;
+            $resident->income = ($request->employed == 'No') ? NULL : $request->income;
             $resident->income_classification = $this->getIncomeClassification($resident->income);
             $resident->save();
             return response()->json([
                 'msg' => 'Resident saved successfully',
             ], JsonResponse::HTTP_CREATED);
+        } catch (\Exception $e) {
+            return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    public function edit($id)
+    {
+        try {
+            return new ResidentResource(Resident::findOrFail($id));
+        } catch (\Exception $e) {
+            return response()->json([
+                'msg' => 'An error has occurred'
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    public function update(ResidentStoreRequest $request, $id)
+    {
+        try {
+            $resident = Resident::findOrFail($id);
+            $resident->household_id = $request->household_id;
+            $resident->first_name = $request->first_name;
+            $resident->middle_name = $request->middle_name;
+            $resident->last_name = $request->last_name;
+            $resident->birth_date = $request->birth_date;
+            $resident->age = Carbon::parse($request->birth_date)->age;
+            $resident->sex = $request->sex;
+            $resident->pregnant = ($request->sex == 'Male') ? "No" : $request->pregnant;
+            $resident->civil_status = $request->civil_status;
+            $resident->religion = $request->religion;
+            $resident->contact = $request->contact;
+            $resident->nationality = $request->nationality;
+            $resident->household_head = $request->household_head;
+            $resident->bona_fide = $request->bona_fide;
+            $resident->resident_six_months = $request->resident_six_months;
+            $resident->solo_parent = $request->solo_parent;
+            $resident->voter = $request->voter;
+            $resident->pwd = $request->pwd;
+            $resident->disability = ($request->pwd == 'No') ? NULL : $request->disability;
+            $resident->studying = $request->studying;
+            $resident->highest_education = $request->highest_education;
+            $resident->employed = $request->employed;
+            $resident->job_title = ($request->employed == 'No') ? NULL : $request->job_title;
+            $resident->income = ($request->employed == 'No') ? NULL : $request->income;
+            $resident->income_classification = $this->getIncomeClassification($resident->income);
+            $resident->save();
+            return response()->json([
+                'msg' => 'Resident updated successfully',
+            ], JsonResponse::HTTP_OK);
         } catch (\Exception $e) {
             return response()->json(['msg' => 'An error has occurred'], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
